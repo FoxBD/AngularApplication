@@ -1,0 +1,65 @@
+.table-body {
+  width: 100%; /* Make the table body take up the full width */
+}
+
+.list-table {
+  width: 90%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+.list-table td {
+  width: 100%;
+}
+
+.car-cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 20px; /* Adds space between rows */
+  width: 100%;
+}
+
+.car-details {
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 10px;
+  width: 100%; /* Ensure the text takes up full width */
+}
+
+.car-image img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  display: block;
+  margin: 0 auto; /* Center the image */
+}
+
+.a-cell {
+  width: 100%;
+}
+
+.car-price {
+  font-size: 1.1em;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-controls button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 1em;
+}
+
+.pagination-controls span {
+  font-size: 1.1em;
+}

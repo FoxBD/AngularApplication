@@ -1,0 +1,33 @@
+<app-translations></app-translations>
+<h2>{{ 'Login Title' | translate }}</h2>
+
+<div class="center-container">
+  <table>
+    <tr>
+      <td>
+        <label for="email">Email:</label>
+        <input style="height: fit-content; width: 60vh" type="email" id="email" name="email" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <label for="password">{{ 'Password' | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="password" id="password" name="password" required>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="2">
+        <button (click)="login()">{{ 'LOG IN' | translate }}</button>
+        <button routerLink="/register" style="height: fit-content; width: fit-content; ">{{ 'Register' | translate }}</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="toastContainer" *ngFor="let toast of toastService.toasts; let i = index">
+  <div class="toastStyle"
+       [ngClass]="{toastStyleSuccess: toast.type === 'success', toastStyleError: toast.type === 'error', toastStyleInfo: toast.type === 'info' }"
+  >{{ toast.message }}</div>
+</div>

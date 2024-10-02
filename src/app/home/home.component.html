@@ -1,0 +1,98 @@
+<app-translations></app-translations>
+
+<div>
+  <button *ngIf="!isLoggedIn()" routerLink="/login" routerLinkActive="active" ariaCurrentWhenActive="page">
+    {{ 'LOG IN' | translate }}
+  </button>
+
+  <button *ngIf="isLoggedIn()" (click)="logout()" routerLinkActive="active" ariaCurrentWhenActive="page">
+    {{ loggedUser?.name }} ({{ 'LOG OUT' | translate }})
+  </button>
+
+  <button *ngIf="loggedUser?.admin" routerLink="/admin" routerLinkActive="active" ariaCurrentWhenActive="page">
+    {{ 'ADMIN CONSOLE' | translate }}
+  </button>
+
+  <button *ngIf="isLoggedIn()" routerLink="/add" routerLinkActive="active" ariaCurrentWhenActive="page">
+    {{ 'NEW AD' | translate }}
+  </button>
+</div>
+
+<h2>{{ 'Car search' | translate }}</h2>
+
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <label for="brand">{{ 'Brand' | translate }}:</label>
+          <select id="brand" name="brand" placeholder="">
+            <option *ngFor="let brand of brands" [value]="brand.id" [defaultSelected]="1">{{ brand.name }}</option>
+          </select>
+        </td>
+
+        <td>
+          <label for="lowPrice">{{ 'Price from' | translate }}:</label>
+          <input style="height: fit-content;" type="number" id="lowPrice" name="lowPrice" [defaultValue]="0">
+        </td>
+
+        <td>
+          <label for="highPrice">{{ 'Price to' | translate }}:</label>
+          <input style="height: fit-content;" type="number" id="highPrice" name="highPrice">
+        </td>
+
+        <td>
+          <label for="mileage">{{ 'Mileage' | translate }} (km):</label>
+          <select id="mileage" name="mileage" placeholder="">
+            <option *ngFor="let mileage of mileage" [value]="mileage.id">{{ mileage.name }}</option>
+          </select>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label for="model">{{ 'Model' | translate }}:</label>
+          <input style="height: fit-content;" type="text" id="model" name="model">
+        </td>
+
+        <td>
+          <label for="lowYear">{{ 'First registration from' | translate }}:</label>
+          <input style="height: fit-content;" type="number" id="lowYear" name="lowYear" [defaultValue]="1950">
+        </td>
+
+        <td>
+          <label for="highYear">{{ 'First registration to' | translate }}:</label>
+          <input style="height: fit-content;" type="number" id="highYear" name="highYear" [defaultValue]="2010">
+        </td>
+
+        <td>
+          <label for="fuel">{{ 'Fuel' | translate }}:</label>
+          <select id="fuel" name="fuel" placeholder="">
+            <option *ngFor="let fuel of fuels" [value]="fuel.id" [defaultSelected]="12">{{ fuel.name }}</option>
+          </select>
+        </td>
+      </tr>
+
+
+      <tr>
+        <button (click)="initSearch()">{{ 'SEARCH' | translate }}</button>
+      </tr>
+    </tbody>
+  </table>
+
+<h3>{{ 'Last 10' | translate }}:</h3>
+<table>
+  <tbody>
+  <tr *ngFor="let row of featuredCars">
+    <td *ngFor="let car of row">
+      <a routerLink="/car/{{ car.id }}">
+        <div><b>{{ car.brandName }} {{ car.model }}</b></div>
+        <div><img [src]="car.image1" alt="Selected Image" style="max-width: 200px; max-height: 250px;"></div>
+        <div>{{ car.price }} €</div>
+      </a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<router-outlet></router-outlet>

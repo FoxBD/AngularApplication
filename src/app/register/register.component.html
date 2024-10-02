@@ -1,0 +1,59 @@
+<app-translations></app-translations>
+
+<h2>{{ (userId ? 'UserEdit Title' : 'Register Title') | translate }}</h2>
+
+<div class="center-container">
+  <table>
+    <tr>
+      <td>
+        <label for="name">{{ 'Name' | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="text" id="name" name="name" [ngModel]="user.name" required autocomplete="off">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="surname">{{ 'Surname' | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="text" id="surname" name="surname" [ngModel]="user.surname" required autocomplete="off">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label for="email">Email:</label>
+        <input style="height: fit-content; width: 60vh" type="email" id="email" name="email" [ngModel]="user.email" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <label for="password">{{ 'Password' | translate }}:</label>
+
+        <input style="height: fit-content; width: 60vh" [placeholder]="(userId ? 'Required password' : '') | translate" type="password" id="password" name="password" required>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <label for="telephone">{{ 'Contact number' | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="text" id="telephone" name="telephone" [ngModel]="user.telephone" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr *ngIf="this.userId">
+      <label for="admin">{{ 'Admin' | translate }}:</label>
+      <input [ngModel]="user.admin" (change)="checkBoxValue($event)"  type="checkbox" id="admin" name="admin" required>
+    </tr>
+
+    <tr>
+      <td>
+        <button (click)="register()">{{ (userId ? 'Edit user' : 'Register user') | translate }}</button>
+        <button *ngIf="userId" (click)="deleteUser()">{{ 'Delete user' | translate }}</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="toastContainer" *ngFor="let toast of toastService.toasts; let i = index">
+  <div class="toastStyle"
+       [ngClass]="{toastStyleSuccess: toast.type === 'success', toastStyleError: toast.type === 'error', toastStyleInfo: toast.type === 'info' }"
+  >{{ toast.message }}</div>
+</div>

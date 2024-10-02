@@ -1,0 +1,108 @@
+<app-translations></app-translations>
+
+<h2>{{ 'Car list' | translate }}</h2>
+
+<table>
+  <tbody>
+  <tr>
+    <td>
+      <label for="brand">{{ 'Brand' | translate }}:</label>
+      <select id="brand" name="brand" placeholder="" [ngModel]="filters.brand">
+        <option *ngFor="let brand of brands" [value]="brand.id">{{ brand.name }}</option>
+      </select>
+    </td>
+
+    <td>
+      <label for="lowPrice">{{ 'Price from' | translate }}:</label>
+      <input style="height: fit-content;" type="number" id="lowPrice" name="lowPrice" [ngModel]="filters.lowPrice">
+    </td>
+
+    <td>
+      <label for="highPrice">{{ 'Price to' | translate }}:</label>
+      <input style="height: fit-content;" type="number" id="highPrice" name="highPrice" [ngModel]="filters.highPrice">
+    </td>
+
+    <td>
+      <label for="mileage">{{ 'Mileage' | translate }} (km):</label>
+      <select id="mileage" name="mileage" placeholder="" [ngModel]="filters.mileage">
+        <option *ngFor="let mileage of mileage" [value]="mileage.id">{{ mileage.name }}</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <label for="model">Model:</label>
+      <input style="height: fit-content;" type="text" id="model" name="model" [ngModel]="filters.model">
+    </td>
+
+    <td>
+      <label for="lowYear">{{ 'First registration from' | translate }}:</label>
+      <input style="height: fit-content;" type="number" id="lowYear" name="lowYear" [ngModel]="filters.lowYear">
+    </td>
+
+    <td>
+      <label for="highYear">{{ 'First registration to' | translate }}:</label>
+      <input style="height: fit-content;" type="number" id="highYear" name="highYear" [ngModel]="filters.highYear">
+    </td>
+
+    <td>
+      <label for="fuel">{{ 'Fuel' | translate }}:</label>
+      <select id="fuel" name="fuel" placeholder="" [ngModel]="filters.fuel">
+        <option *ngFor="let fuel of fuels" [value]="fuel.id">{{ fuel.name }}</option>
+      </select>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="3">
+    <button (click)="getFilters()">{{ 'SEARCH' | translate }}</button>
+    </td>
+    <td colspan="3">
+      <label>{{ 'Sort by' | translate }}:</label>
+      <button (click)="sortBrand()">{{ 'Brand' | translate }} {{ currentBrandState }}</button>
+      <button (click)="sortYear()">{{ 'Year' | translate }} {{ currentYearState }}</button>
+      <button (click)="sortPrice()">{{ 'Price' | translate }} {{ currentPriceState }}</button>
+    </td>
+  </tr>
+
+
+  </tbody>
+</table>
+
+<div class="pagination-controls">
+  <button (click)="previousPage()" [disabled]="pageIndex === 1">{{ 'Previous' | translate }}</button>
+  <span>{{ 'Page' | translate }} {{ pageIndex }} {{ 'of' | translate }} {{ totalPages }}</span>
+  <button style="margin: 10px" (click)="nextPage()" [disabled]="pageIndex === totalPages">{{ 'Next' | translate }}</button>
+</div>
+<div class="table-body">
+  <table class="list-table">
+    <tbody>
+    <tr *ngFor="let car of paginatedCars">
+      <td class="car-cell">
+        <a class="a-cell" routerLink="/car/{{ car.id }}">
+          <div class="car-details">
+            <b>{{ car.brandName }} {{ car.model }}</b>
+          </div>
+          <div class="car-image">
+            <img [src]="car.image1" style="max-width: 200px; max-height: 250px;" alt="Selected Image">
+          </div>
+          <div class="car-price">{{ car.price }} €</div>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="pageIndex === 1">{{ 'Previous' | translate }}</button>
+    <span>{{ 'Page' | translate }} {{ pageIndex }} {{ 'of' | translate }} {{ totalPages }}</span>
+    <button style="margin: 10px" (click)="nextPage()" [disabled]="pageIndex === totalPages">{{ 'Next' | translate }}</button>
+  </div>
+</div>
+
+<div class="toastContainer" *ngFor="let toast of toastService.toasts; let i = index">
+  <div class="toastStyle"
+       [ngClass]="{toastStyleSuccess: toast.type === 'success', toastStyleError: toast.type === 'error', toastStyleInfo: toast.type === 'info' }"
+  >{{ toast.message }}</div>
+</div>
+

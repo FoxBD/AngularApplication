@@ -1,0 +1,126 @@
+<app-translations></app-translations>
+<h2>{{ (this.fullPath[1] === 'add' ? 'CarAdd Title' : 'CarEdit Title') | translate }}</h2>
+<button *ngIf="isEditMode" (click)="deleteCar()">Delete AD</button>
+<div class="center-container">
+  <table>
+    <tr>
+      <td colspan="3">
+        <label for="brand">{{ "Brand" | translate }}:</label>
+        <select id="brand" name="brand" placeholder="" [ngModel]="car.brand">
+          <option *ngFor="let priority of brand" [value]="priority.id">{{ priority.name }}</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="model">{{ "Model" | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="text" id="model" name="model" [ngModel]="car.model" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="mileage">{{ "Mileage" | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="number" id="mileage" name="mileage" [ngModel]="car.mileage" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="engine">{{ "Engine" | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="text" id="engine" name="engine" [ngModel]="car.engine" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="fuel">{{ "Fuel" | translate }}:</label>
+        <select id="fuel" name="fuel" placeholder="" [ngModel]="car.fuel" >
+          <option *ngFor="let priority of fuel" [value]="priority.id">{{ priority.name }}</option>
+        </select>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="year">{{ "Year" | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="number" id="year" name="year" [ngModel]="car.year" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="doorNum">{{ "Number of doors" | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="number" id="doorNum" name="doorNum" [ngModel]="car.doorNum" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="description">{{ "Description" | translate }}:</label>
+        <textarea style="height: fit-content; width: 60vh" type="text" id="description" name="description" [ngModel]="car.description" required autocomplete="off"></textarea>
+      </td>
+    </tr>
+
+    <tr>
+      <td colspan="3">
+        <label for="price">{{ "Asking price" | translate }}:</label>
+        <input style="height: fit-content; width: 60vh" type="number" id="price" name="price" [ngModel]="car.price" required autocomplete="off">
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <div>
+          <label for="image1">{{ "Image" | translate }} 1:</label>
+          <input style="height: fit-content;" type="file" id="image1" name="image1" accept="image/*" (change)="onFileSelected($event, 1)">
+        </div>
+      </td>
+      <td>
+        <div>
+          <label for="image2">{{ "Image" | translate }} 2:</label>
+          <input style="height: fit-content;" type="file" id="image2" name="image2" accept="image/*" (change)="onFileSelected($event, 2)">
+        </div>
+      </td>
+      <td>
+        <div>
+          <label for="image3">{{ "Image" | translate }} 3:</label>
+          <input style="height: fit-content;" type="file" id="image3" name="image3" accept="image/*" (change)="onFileSelected($event, 3)">
+        </div>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <div *ngIf="car.image1">
+          <h4>{{ "Selected Image" | translate }}:</h4>
+          <img [src]="car.image1" style="max-width: 150px; max-height: 150px;">
+        </div>
+      </td>
+      <td>
+        <div *ngIf="car.image2">
+          <h4>{{ "Selected Image" | translate }}:</h4>
+          <img [src]="car.image2" alt="Selected Image 2" style="max-width: 150px; max-height: 150px;">
+        </div>
+      </td>
+      <td>
+        <div *ngIf="car.image3">
+          <h4>{{ "Selected Image" | translate }}:</h4>
+          <img [src]="car.image3" alt="Selected Image 3" style="max-width: 150px; max-height: 150px;">
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button (click)="newCar()">{{ (this.fullPath[1] === 'add' ? 'Add new Car' : 'Save changes') | translate }}</button>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="toastContainer" *ngFor="let toast of toastService.toasts; let i = index">
+  <div class="toastStyle"
+       [ngClass]="{toastStyleSuccess: toast.type === 'success', toastStyleError: toast.type === 'error', toastStyleInfo: toast.type === 'info' }"
+  >{{ toast.message }}</div>
+</div>

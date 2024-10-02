@@ -1,0 +1,54 @@
+<app-translations></app-translations>
+<button *ngIf="isAuthor()" routerLink="/edit/{{car?.id }}" routerLinkActive="active" ariaCurrentWhenActive="page">
+  EDIT THIS AD
+</button>
+<div>
+  <h2>{{ car?.brandName }} {{ car?.model }}</h2>
+
+  <div>
+    <img [src]="car?.image1" alt="No image" style="max-width: 400px; max-height: 400px;">
+    <img [src]="car?.image2" alt="" style="max-width: 400px; max-height: 400px;">
+    <img [src]="car?.image3" alt="" style="max-width: 400px; max-height: 400px;">
+  </div>
+
+  <div class="table-body">
+    <table>
+      <tbody>
+      <tr>
+        <td>{{ 'Engine' | translate }}</td>
+        <td>{{ car?.engine ? car?.engine : "NaN" }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'Mileage' | translate }}</td>
+        <td>{{ car?.mileage ? car?.mileage : "NaN" }} km</td>
+      </tr>
+      <tr>
+        <td>{{ 'Fuel' | translate }}</td>
+        <td>{{ car?.fuelName ? car?.fuelName : "NaN" }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'Year' | translate }}</td>
+        <td>{{ car?.year ? car?.year : "NaN" }}</td>
+      </tr>
+      <tr>
+        <td>{{ 'Number of doors' | translate }}</td>
+        <td>{{ car?.doorNum ? car?.doorNum : "NaN" }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br>
+
+<h4>{{ 'Description' | translate }}:</h4>
+<p>{{ car?.description ? car?.description : "NaN" }}</p>
+
+<br>
+
+<h2 style="text-align: center">{{ car?.price }} €</h2>
+<p>{{ 'Seller' | translate }}: {{car?.sellerName ? car?.sellerName : "NaN"}} {{car?.sellerSurname ? car?.sellerSurname : "NaN"}}</p>
+<p>{{ 'Contact' | translate }}: {{car?.sellerTelephone ? car?.sellerTelephone : "NaN"}}</p>
+<p>{{ 'Date' | translate }}: {{car?.date ? car?.date : "NaN"}}</p>
+
+

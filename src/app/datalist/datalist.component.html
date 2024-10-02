@@ -1,0 +1,54 @@
+<h2>{{ title }}</h2>
+<button (click)="openEditForm(null)">{{ 'ADD' | translate }} {{ title.toUpperCase() }}</button>
+
+<div>
+  <table>
+    <tbody>
+    <tr *ngFor="let row of chunkedItems">
+      <td *ngFor="let item of row">
+        <a style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 80px; text-align: center; height: fit-content;"  (click)="openEditForm(item)">
+          <div><b>{{ item[itemKey] }}</b></div>
+          <div *ngIf="title === 'Brand' || 'Znamka'">
+            <img *ngIf="item.image" [src]="item.image" alt="Image Preview" style="max-width: 50px; max-height: 50px;" />
+          </div>
+        </a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="isFormVisible" class="form-container">
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <h3 style="margin: 0;">{{ (isEditing ? 'Edit existing' : 'Add new') | translate }} {{ title }}</h3>
+    <button type="button" (click)="closeForm()">{{ 'Close' | translate }}</button>
+  </div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; border: 1px solid #ccc; padding: 10px;">
+    <div>
+      <label for="name">{{ 'Name' | translate }}:</label>
+      <input style="height: fit-content;" type="text" id="name" name="name" [(ngModel)]="item.name">
+    </div>
+
+    <div *ngIf="title === 'Brand' || title === 'Znamka'">
+      <label for="image"></label>
+      <input style="height: fit-content;" type="file" id="image" name="image" accept="image/*" (change)="onFileSelected($event)">
+    </div>
+
+    <div *ngIf="item.image && title === 'Brand' || title === 'Znamka'">
+      <h4>{{ 'Selected Image' | translate }}:</h4>
+      <img [src]="item.image" alt="Selected Image" style="max-width: 150px; max-height: 150px;">
+    </div>
+
+    <div>
+      <button type="button" (click)="saveChanges()">{{ (isEditing ? 'Edit' : 'Add') | translate }}</button>
+      <button type="button" (click)="deleteItem()" *ngIf="isEditing">{{ 'Delete' | translate }}</button>
+    </div>
+  </div>
+</div>
+
+<div class="toastContainer" *ngFor="let toast of toastService.toasts; let i = index">
+  <div class="toastStyle"
+       [ngClass]="{toastStyleSuccess: toast.type === 'success', toastStyleError: toast.type === 'error', toastStyleInfo: toast.type === 'info' }"
+  >{{ toast.message }}</div>
+</div>

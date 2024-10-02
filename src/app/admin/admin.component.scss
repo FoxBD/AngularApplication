@@ -1,0 +1,37 @@
+.table-wrapper {
+  max-width: 1200px;
+}
+
+.table-body {
+  height: 300px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+td {
+  border: 1px solid #ddd;
+  text-align: center;
+  height: 50px;
+  vertical-align: middle;
+}
+
+th {
+  border: 1px solid #ddd;
+  padding: 10px;
+  background-color: #f4f4f4;
+}
+
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin: auto;
+}
+
+.pagination-controls {
+  justify-content: flex-end;
+}

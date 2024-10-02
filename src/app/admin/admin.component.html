@@ -1,0 +1,58 @@
+<app-translations></app-translations>
+<div class="center-container">
+  <h1>{{ 'Admin Control Panel' | translate }}</h1>
+
+  <h2>{{ 'Users' | translate }}</h2>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+      <tr>
+        <th>{{ 'Name' | translate }}</th>
+        <th>{{ 'Surname' | translate }}</th>
+        <th>Email</th>
+        <th>{{ 'Contact number' | translate }}</th>
+        <th>{{ 'Admin' | translate }}</th>
+        <th></th>
+      </tr>
+      </thead>
+    </table>
+
+    <div class="table-body">
+      <table>
+        <tbody>
+        <tr *ngFor="let user of paginatedUsers; let i = index">
+          <td>{{ user.name }}</td>
+          <td>{{ user.surname }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.telephone }}</td>
+          <td><input type="checkbox" [(ngModel)]="user.admin" disabled /></td>
+          <td>
+            <button routerLink="/user-edit/{{user.id}}" routerLinkActive="active" ariaCurrentWhenActive="page">{{ 'Edit' | translate }}</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-controls">
+      <button (click)="previousPage()" [disabled]="pageIndex === 1">{{ 'Previous' | translate }}</button>
+      <span>{{ 'Page' | translate }} {{ pageIndex }} {{ 'of' | translate }} {{ totalPages }}</span>
+      <button style="margin: 10px" (click)="nextPage()" [disabled]="pageIndex === totalPages">{{ 'Next' | translate }}</button>
+    </div>
+  </div>
+
+
+
+  <app-datalist
+    [title]="'Fuel' | translate"
+    [items]="fuels"
+    [itemKey]="'name'">
+  </app-datalist>
+
+  <app-datalist
+    [title]="'Brand' | translate"
+    [items]="brands"
+    [itemKey]="'name'">
+  </app-datalist>
+
+</div>
