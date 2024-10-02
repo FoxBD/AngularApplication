@@ -1,6 +1,6 @@
 <app-translations></app-translations>
 <h2>{{ (this.fullPath[1] === 'add' ? 'CarAdd Title' : 'CarEdit Title') | translate }}</h2>
-<button *ngIf="isEditMode" (click)="deleteCar()">Delete AD</button>
+<button *ngIf="isEditMode" (click)="deleteCar()">{{ "Delete" | translate }} {{ "AD" | translate }}</button>
 <div class="center-container">
   <table>
     <tr>

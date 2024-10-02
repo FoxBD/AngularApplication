@@ -12,29 +12,36 @@ import {Router} from "@angular/router";
   styleUrl: './caredit.component.scss'
 })
 export class CareditComponent implements OnInit {
+  // init of arrays
   fuel: Fuel[] = [];
   brand: Brand[] = [];
 
   car: any = {};
   bearerUser: any = {};
   fullPath: string[] = [];
+
   isEditMode: boolean = false;
 
   selectedFile: File | null = null;
-  constructor(private appService: AppService, private router: Router, public toastService: ToastService) {
-  }
+
+  // authService handles User log in, register and saving data to localstorage, also retrieving stuff from there
+  // router enables us to move around the application by calling desired url, I use it here to get to AD list
+  // toastService shows informative popups to user, I use them to indicate error when filling forms or show success on successful login or create
+  constructor(private appService: AppService, private router: Router, public toastService: ToastService) {}
+
   ngOnInit() {
-    this.fullPath = this.router.url.split('/')
-    if (this.fullPath[1] === 'edit') {
+    this.fullPath = this.router.url.split('/') // from URL get data
+    if (this.fullPath[1] === 'edit') { // if true, page used for editing existing car
       this.isEditMode = true;
       this.editExistingCar(this.fullPath[2]);
     }
 
-    const bearerUserString = localStorage.getItem("bearer_user");
-    if (bearerUserString) {
+    const bearerUserString = localStorage.getItem("bearer_user"); // this is retrieved from localStorage
+    if (bearerUserString) { // if got user, so logged in
       this.bearerUser = JSON.parse(bearerUserString);
       console.log(this.bearerUser);
 
+      // second, third function retrieves data and set it to dropdown menu options
       this.appService.getFuel().subscribe(fuel => {
         this.fuel = fuel;
         this.appService.getBrand().subscribe(brand => {
@@ -45,6 +52,7 @@ export class CareditComponent implements OnInit {
       }
   }
 
+  // function retrieves car and set it to form on page
   editExistingCar(carId: any): void {
     this.appService.getOneCar(carId).subscribe((response)=> {
       this.car = response;
@@ -53,6 +61,7 @@ export class CareditComponent implements OnInit {
   }
 
   newCar() {
+    // form is first checked if all elements are filled if so, edit or create request is being sent
     let allFilled = true;
 
     const brandElement = document.getElementById('brand') as HTMLSelectElement;
@@ -117,7 +126,7 @@ export class CareditComponent implements OnInit {
 
 
     if (allFilled) {
-      if (this.fullPath[1] === 'add') {
+      if (this.fullPath[1] === 'add') { // if add, form will create new AD, after success user will be redirected to home page
         // seller is set only on ADDING...
         this.car.seller = this.bearerUser.id
         this.appService.addCar(this.car).subscribe((response) => {
@@ -126,7 +135,7 @@ export class CareditComponent implements OnInit {
             this.router.navigate(['/']);
           }, 2000);
         })
-      } else if (this.fullPath[1] === 'edit') {
+      } else if (this.fullPath[1] === 'edit') { // if edit, form will create new AD
         this.appService.updateCar(this.fullPath[2], this.car).subscribe((response) => {
           this.toastService.add('Car updated', 2000, 'success');
         })
@@ -136,6 +145,7 @@ export class CareditComponent implements OnInit {
     }
   }
 
+  // function deletes car and redirects user back to home page for further work, if it fails to find selected car it stays on page
   deleteCar() {
     this.appService.deleteCar(+this.fullPath[2]).subscribe((response) => {
       this.toastService.add('Car deleted', 2000, 'success');

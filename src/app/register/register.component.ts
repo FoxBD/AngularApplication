@@ -12,22 +12,28 @@ import {AppService} from "../service/app.service";
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit {
+  // init of array
   user: User = {}
-  token: string = "";
+
   userId: string = "";
+
   checkboxValue?: boolean = false;
 
+  // authService handles User log in, register and saving data to localstorage, also retrieving stuff from there
+  // appService has routes for every get, post or edit function
+  // router enables us to move around the application by calling desired url, I use it here to get to AD list
+  // toastService shows informative popups to user, I use them to indicate error when filling forms or show success on successful login or create
   constructor(private authService: AuthService, private appService: AppService, private router: Router, public toastService: ToastService) {}
 
   ngOnInit() {
-    //this.testLogin();
-    const fullPath = this.router.url.split('/')
-    if (fullPath[1] === 'user-edit') {
+    const fullPath = this.router.url.split('/') // from URL get data
+    if (fullPath[1] === 'user-edit') { // if true, page used for editing existing user
       this.userId = fullPath[2]
       this.adminEditing()
     }
   }
 
+  // function retrieves user and set them to form on page, for bool control it also sets state of Is admin checkbox
   adminEditing(): void {
     this.appService.getOneUser(this.userId).subscribe((response)=> {
       this.user = response;
@@ -36,14 +42,8 @@ export class RegisterComponent implements OnInit {
     })
   }
 
-  // Method to handle form submission
-  testLogin() {
-    this.authService.login("admin@admin.com", "admin").subscribe(response => {
-      this.toastService.add(response.token, 2000, 'success');
-    })
-  }
-
   register() {
+    // form is first checked if all elements are filled if so, edit or create request is being sent
     let allFilled = true;
     const nameElement = document.getElementById('name') as HTMLInputElement;
     if (!nameElement.value) { allFilled = false; }
@@ -57,13 +57,13 @@ export class RegisterComponent implements OnInit {
     if (!telephoneElement.value) { allFilled = false; }
 
     if (allFilled) {
-      if (!this.userId) {
+      if (!this.userId) { // if there is no userId present in URL, that means that the page is in creating form and will create new user with specified data
         this.authService.register(nameElement.value, surnameElement.value,emailElement.value, passwordElement.value, telephoneElement.value).subscribe({
           next: (response) => {
             this.toastService.add('User created, welcome ' + nameElement.value, 2000, 'success');
-            this.router.navigate(['/login']);
+            this.router.navigate(['/login']); // user redirected back to login page
           },
-          error: (error: HttpErrorResponse) => {
+          error: (error: HttpErrorResponse) => { // if there is error in time of creating user or if values are incorrect, user is shown a popup with an error message
             if (error.status === 401) {
               this.toastService.add('Invalid register credentials. Please try again.', 2000, 'error');
             } else {
@@ -72,13 +72,14 @@ export class RegisterComponent implements OnInit {
           }
         })
       }
-      else {
+      else { // this is initialized when userId is present in URL, that means that the page is in editing form
+        // User instance filled with data written in form
         const payload: User = { 'name': nameElement.value, 'surname': surnameElement.value, 'email': emailElement.value, 'password': passwordElement.value, 'admin': this.checkboxValue, 'telephone': telephoneElement.value}
         this.appService.updateUser(+this.userId, payload).subscribe({
           next: (response) => {
             this.toastService.add('User updated', 2000, 'success');
           },
-            error: (error: HttpErrorResponse) => {
+            error: (error: HttpErrorResponse) => { // if there is error in time of creating user or if values are incorrect, user is shown a popup with an error message
             if (error.status === 401) {
               this.toastService.add('Invalid user credentials. Please try again.', 2000, 'error');
             } else {
@@ -92,12 +93,15 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  // function just sets value that is represented by checkbox, tick 1, empty 0
   checkBoxValue(event: Event) {
     const target = event.target as HTMLInputElement;
     this.checkboxValue = target.checked;
   }
 
 
+  // function deletes user and redirects user back to admin control panel for further work, if it fails to find selected user it throws and
+  // error and shows a popup
   deleteUser() {
     this.appService.deleteUser(+this.userId).subscribe({
       next: (response) => {
